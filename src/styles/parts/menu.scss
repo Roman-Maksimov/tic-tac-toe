@@ -1,0 +1,15 @@
+.symbols {
+  ul {
+    padding: 0;
+
+    li {
+      display: inline-block;
+      list-style: none;
+
+      &.active {
+        border-width: 3px;
+        color: #fff;
+      }
+    }
+  }
+}

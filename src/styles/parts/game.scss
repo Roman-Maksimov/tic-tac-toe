@@ -1,0 +1,16 @@
+.game {
+  position: relative;
+  width: $width;
+  top: 100px;
+  left: 50%;
+  margin-left: -($width / 2);
+  border: 20px solid $color_border;
+  text-align: center;
+  padding: 20px;
+  background: #fafad2;
+  box-sizing: border-box;
+  white-space: nowrap;
+
+  @import "menu.scss";
+  @import "field.scss";
+}

@@ -1,0 +1,64 @@
+$font_family: Verdana, Tahoma, Arial, sans-serif;
+$img: "../img/";
+$icons: $img + "icons/";
+
+$width: 650px;
+
+$color_font: #8b4513;
+$color_border: #8b4513;
+$color_background: #f4a460;
+$color_input_shadow: rgba(215, 215, 215, 0.7);
+$color_text_shadow: $color_font;
+$color_box_shadow: rgba(15, 15, 15, 0.7);
+
+@import "include/functions.scss";
+@import "include/keyframes.scss";
+
+body { padding: 0; margin: 0; min-width: $width; font-family: $font_family; color: $color_font;}
+
+h1	{ font-size: 220%; font-weight: bold; margin-bottom: 20px;}
+h2	{ font-size: 190%; font-weight: bold; margin-bottom: 15px;}
+h3	{ font-size: 150%; font-weight: bold; margin-bottom: 10px;}
+h4	{ font-size: 100%; font-weight: bold; margin-bottom: 5px; margin-left: 10px;}
+h5	{ font-size: 100%; font-weight: bold; margin-bottom: 5px; margin-left: 20px;}
+h6	{ font-size: 100%; font-weight: bold; margin-bottom: 5px; margin-left: 30px;}
+
+.b-button {
+  display: inline-block;
+  background: $color_background;
+  border: 1px solid $color_border;
+  color: $color_font;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px;
+  padding: 10px;
+
+  @include border-radius(3px);
+}
+.b-button:hover {
+  @include box-shadow(0, 0, 5px, 0, $color_box_shadow);
+}
+.b-button:active {
+  @include box-shadow(0, 0, 5px, 0, $color_box_shadow, inset);
+}
+.b-button.b-animation:not(.disabled):not(.selected):hover {
+  @include animation-name(key-button-animation);
+  @include animation-duration(.25s);
+}
+
+input, select {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 11pt;
+  border: 1px solid #ccc;
+
+  text-shadow: 0 1px 1px $color_text_shadow;
+
+  @include box-sizing(border-box);
+  @include border-radius(5px);
+  @include box-shadow(0, 3px, 6px, 0, $color_input_shadow, inset);
+}
+
+select option { padding: 0 10px; text-shadow: none;}
+
+@import "parts/game.scss";

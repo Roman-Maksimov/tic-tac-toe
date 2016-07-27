@@ -1,0 +1,68 @@
+@mixin box-shadow($x, $y, $r, $s, $color, $inset: ""){
+	-webkit-box-shadow: unquote($inset) $x $y $r $s $color;
+	 -khtml-box-shadow: unquote($inset) $x $y $r $s $color;
+	   -moz-box-shadow: unquote($inset) $x $y $r $s $color;
+	        box-shadow: unquote($inset) $x $y $r $s $color;
+}
+
+@mixin border-radius($radius){
+  -webkit-border-radius: $radius;
+   -khtml-border-radius: $radius;
+     -moz-border-radius: $radius;
+          border-radius: $radius;
+}
+
+@mixin box-sizing($value){
+  -webkit-box-sizing: $value;
+   -khtml-box-sizing: $value;
+     -moz-box-sizing: $value;
+          box-sizing: $value;
+}
+
+@mixin background-gradient($start_color, $stop_color){
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0.5, $start_color),
+		color-stop(1, $stop_color)
+	);
+	background-image: -o-linear-gradient(bottom, $start_color 50%, $stop_color 100%);
+	background-image: -moz-linear-gradient(bottom, $start_color 50%, $stop_color 100%);
+	background-image: -webkit-linear-gradient(bottom, $start_color 50%, $stop_color 100%);
+	background-image: -ms-linear-gradient(bottom, $start_color 50%, $stop_color 100%);
+	background-image: linear-gradient(to bottom, $start_color 50%, $stop_color 100%);
+}
+
+@mixin align-center($width){
+	position: absolute;
+	width: $width;
+	margin-left: -($width/2);
+	left: 50%;
+}
+
+@mixin valign-middle($height){
+	position: absolute;
+	min-height: $height;
+	margin-top: -($height/2);
+	top: 50%;
+}
+
+@mixin align-center-middle($width, $height){
+	@include align-center($width);
+	@include valign-middle($height);
+}
+
+@mixin animation-name($name){
+  -webkit-animation-name: $name;
+     -moz-animation-name: $name;
+       -o-animation-name: $name;
+          animation-name: $name;
+}
+
+@mixin animation-duration($time) {
+  -webkit-animation-duration: $time;
+     -moz-animation-duration: $time;
+       -o-animation-duration: $time;
+          animation-duration: $time;
+}

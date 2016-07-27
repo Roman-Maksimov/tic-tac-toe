@@ -1,0 +1,59 @@
+table.field {
+  display: inline-block;
+  margin: 0 20px;
+  border-collapse: separate;
+  /*border-spacing: 0;*/
+
+  tr {
+    td {
+      width: 60px;
+      height: 60px;
+      color: #fff;
+      font-size: 36px;
+      font-weight: bold;
+      background: $color_background;
+      cursor: pointer;
+
+      div {
+        @include animation-name(key-button-animation);
+        @include animation-duration(.25s);
+      }
+    }
+
+    &:nth-child(odd) td:nth-child(odd) {
+      background: $color_border;
+    }
+    &:nth-child(even) td:nth-child(even) {
+      background: $color_border;
+    }
+  }
+}
+
+.score {
+  display: inline-block;
+  width: 150px;
+  vertical-align: top;
+
+  .title {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  .num {
+    font-size: 40px;
+    font-weight: bold;
+  }
+}
+
+.popup {
+  position: absolute;
+  width: 200px;
+  height: 80px;
+  top: 180px;
+  left: 50%;
+  margin-left: -110px;
+  padding: 10px;
+  background: #fafad2;
+  border: 1px solid #8b4513;
+
+  @include box-shadow(1px, 1px, 5px, 0, $color_box_shadow);
+}
