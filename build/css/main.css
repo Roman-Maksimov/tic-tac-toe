@@ -1,4 +1,195 @@
+@-webkit-keyframes key-button-animation {
+  0% {
+    -webkit-transform: scale(1); }
+  100% {
+    -webkit-transform: scale(1.2); } }
+
+@-moz-keyframes key-button-animation {
+  0% {
+    -moz-transform: scale(1); }
+  100% {
+    -moz-transform: scale(1.2); } }
+
+@-o-keyframes key-button-animation {
+  0% {
+    -o-transform: scale(1); }
+  100% {
+    -o-transform: scale(1.2); } }
+
+@keyframes key-button-animation {
+  0% {
+    transform: scale(1); }
+  100% {
+    transform: scale(1.2); } }
+
+body {
+  padding: 0;
+  margin: 0;
+  min-width: 650px;
+  font-family: Verdana, Tahoma, Arial, sans-serif;
+  color: #8b4513; }
+
+h1 {
+  font-size: 220%;
+  font-weight: bold;
+  margin-bottom: 20px; }
+
+h2 {
+  font-size: 190%;
+  font-weight: bold;
+  margin-bottom: 15px; }
+
+h3 {
+  font-size: 150%;
+  font-weight: bold;
+  margin-bottom: 10px; }
+
+h4 {
+  font-size: 100%;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-left: 10px; }
+
+h5 {
+  font-size: 100%;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-left: 20px; }
+
+h6 {
+  font-size: 100%;
+  font-weight: bold;
+  margin-bottom: 5px;
+  margin-left: 30px; }
+
+.b-button {
+  display: inline-block;
+  background: #f4a460;
+  border: 1px solid #8b4513;
+  color: #8b4513;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px;
+  padding: 10px;
+  -webkit-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px; }
+
+.b-button:hover {
+  -webkit-box-shadow:  0 0 5px 0 rgba(15, 15, 15, 0.7);
+  -khtml-box-shadow:  0 0 5px 0 rgba(15, 15, 15, 0.7);
+  -moz-box-shadow:  0 0 5px 0 rgba(15, 15, 15, 0.7);
+  box-shadow:  0 0 5px 0 rgba(15, 15, 15, 0.7); }
+
+.b-button:active {
+  -webkit-box-shadow: inset 0 0 5px 0 rgba(15, 15, 15, 0.7);
+  -khtml-box-shadow: inset 0 0 5px 0 rgba(15, 15, 15, 0.7);
+  -moz-box-shadow: inset 0 0 5px 0 rgba(15, 15, 15, 0.7);
+  box-shadow: inset 0 0 5px 0 rgba(15, 15, 15, 0.7); }
+
+.b-button.b-animation:not(.disabled):not(.selected):hover {
+  -webkit-animation-name: key-button-animation;
+  -moz-animation-name: key-button-animation;
+  -o-animation-name: key-button-animation;
+  animation-name: key-button-animation;
+  -webkit-animation-duration: 0.25s;
+  -moz-animation-duration: 0.25s;
+  -o-animation-duration: 0.25s;
+  animation-duration: 0.25s; }
+
+input, select {
+  height: 32px;
+  padding: 0 10px;
+  font-size: 11pt;
+  border: 1px solid #ccc;
+  text-shadow: 0 1px 1px #8b4513;
+  -webkit-box-sizing: border-box;
+  -khtml-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 5px;
+  -khtml-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 3px 6px 0 rgba(215, 215, 215, 0.7);
+  -khtml-box-shadow: inset 0 3px 6px 0 rgba(215, 215, 215, 0.7);
+  -moz-box-shadow: inset 0 3px 6px 0 rgba(215, 215, 215, 0.7);
+  box-shadow: inset 0 3px 6px 0 rgba(215, 215, 215, 0.7); }
+
+select option {
+  padding: 0 10px;
+  text-shadow: none; }
+
 .game {
-  background: #8A6343; }
+  position: relative;
+  width: 650px;
+  top: 100px;
+  left: 50%;
+  margin-left: -325px;
+  border: 20px solid #8b4513;
+  text-align: center;
+  padding: 20px;
+  background: #fafad2;
+  box-sizing: border-box;
+  white-space: nowrap; }
+  .game .symbols ul {
+    padding: 0; }
+    .game .symbols ul li {
+      display: inline-block;
+      list-style: none; }
+      .game .symbols ul li.active {
+        border-width: 3px;
+        color: #fff; }
+  .game table.field {
+    display: inline-block;
+    margin: 0 20px;
+    border-collapse: separate;
+    /*border-spacing: 0;*/ }
+    .game table.field tr td {
+      width: 60px;
+      height: 60px;
+      color: #fff;
+      font-size: 36px;
+      font-weight: bold;
+      background: #f4a460;
+      cursor: pointer; }
+      .game table.field tr td div {
+        -webkit-animation-name: key-button-animation;
+        -moz-animation-name: key-button-animation;
+        -o-animation-name: key-button-animation;
+        animation-name: key-button-animation;
+        -webkit-animation-duration: 0.25s;
+        -moz-animation-duration: 0.25s;
+        -o-animation-duration: 0.25s;
+        animation-duration: 0.25s; }
+    .game table.field tr:nth-child(odd) td:nth-child(odd) {
+      background: #8b4513; }
+    .game table.field tr:nth-child(even) td:nth-child(even) {
+      background: #8b4513; }
+  .game .score {
+    display: inline-block;
+    width: 150px;
+    vertical-align: top; }
+    .game .score .title {
+      margin-bottom: 20px;
+      font-weight: bold; }
+    .game .score .num {
+      font-size: 40px;
+      font-weight: bold; }
+  .game .popup {
+    position: absolute;
+    width: 200px;
+    height: 80px;
+    top: 180px;
+    left: 50%;
+    margin-left: -110px;
+    padding: 10px;
+    background: #fafad2;
+    border: 1px solid #8b4513;
+    -webkit-box-shadow:  1px 1px 5px 0 rgba(15, 15, 15, 0.7);
+    -khtml-box-shadow:  1px 1px 5px 0 rgba(15, 15, 15, 0.7);
+    -moz-box-shadow:  1px 1px 5px 0 rgba(15, 15, 15, 0.7);
+    box-shadow:  1px 1px 5px 0 rgba(15, 15, 15, 0.7); }
 
 /*# sourceMappingURL=main.css.map*/
