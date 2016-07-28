@@ -3,15 +3,17 @@ import store from 'src/store';
 
 
 @connect(state => {return {
-    field: state.settings.field
+    fieldSize: state.settings.fieldSize,
+    symbol: state.settings.symbol
 }})
 export default class Menu extends CComponent {
     start = () => {
-        const {field} = this.props;
+        const {fieldSize, symbol} = this.props;
 
         store.dispatch({
             type: 'GAME_START',
-            field
+            fieldSize,
+            symbol
         });
     };
 

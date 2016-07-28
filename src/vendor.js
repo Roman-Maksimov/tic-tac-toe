@@ -7,7 +7,7 @@ export const {Locations, Location, NotFound} = require('react-router-component')
 export const Redux = require('redux');
 export const {Provider, connect} = require('react-redux');
 
-export const cx = require('classnames');
+export const cx = require('classnames/bind');
 
 export const cloneDeep = require('lodash.clonedeep');
 export const debounce = require('lodash.debounce');

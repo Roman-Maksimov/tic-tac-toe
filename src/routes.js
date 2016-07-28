@@ -13,6 +13,8 @@ export default (
         <Router history={history}>
             <Route component={App}>
                 <Route path="/" component={require('app/components/game').default}/>
+
+                <Redirect from="*" to="/" />
             </Route>
         </Router>
     </Provider>

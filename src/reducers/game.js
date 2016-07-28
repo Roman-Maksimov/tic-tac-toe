@@ -22,16 +22,15 @@ const def = {
  *    |  null  null  null  |
  *    --                  --
  *
- * @param field - field dimension
+ * @param fieldSize - field dimension
  * @returns {Array}
  */
-const clearCells = (field) => {
-    const fieldSize = field.length === 2 && field[0] && field[1] ? field.splice(0) : [3, 3];
+const clearCells = (fieldSize) => {
     const rows = [];
 
-    for(let y = 0; y < fieldSize[1]; y++) {
+    for(let y = 0; y < fieldSize; y++) {
         const cols = [];
-        for (let x = 0; x < fieldSize[0]; x++) {
+        for (let x = 0; x < fieldSize; x++) {
             cols.push(null);
         }
 
@@ -43,21 +42,29 @@ const clearCells = (field) => {
 
 export const game = function(state = def, action) {
     switch(action.type) {
-        case 'GAME_START':
-            const {field} = action;
-            const cells = clearCells(field);
+        case 'GAME_START': {
+            const {fieldSize, symbol} = action;
+            const cells = clearCells(fieldSize);
             const score = Object.assign({}, state.score);
+            const isWaiting = symbol > 0;
 
-            return Object.assign({}, def, {isStarted: true, isWaiting: true, cells, score});
-        case 'GAME_PLAY_COMPUTER': {
+            return Object.assign({}, def, {isStarted: true, isWaiting, cells, score});
+        } case 'GAME_PLAY_COMPUTER': {
             let {step} = state;
+            const {fieldSize} = action;
             const cells = state.cells.splice(0);
 
             const line = (player)=>{
                 let protectPoint = null;
 
-                let rColSet = [0, 0, 0];
-                let rColFree = [null, null, null];
+                let rColSet = [];
+                let rColFree = [];
+
+                for(let i = 0; i < fieldSize; i++){
+                    rColSet.push(0);
+                    rColFree.push(null);
+                }
+
                 let rDiagSet = [0, 0];
                 let rDiagFree = [null, null];
                 cells.map((row, x) => {
@@ -74,48 +81,32 @@ export const game = function(state = def, action) {
                                 rColFree[y] = [x, y];
 
                                 // first diagonal
-                                if(
-                                       x === 0 && y === 0
-                                    || x === 1 && y === 1
-                                    || x === 2 && y === 2
-                                )
+                                if(x == y)
                                     rDiagFree[0] = [x, y];
 
                                 // second diagonal
-                                if(
-                                       x === 2 && y === 0
-                                    || x === 1 && y === 1
-                                    || x === 0 && y === 2
-                                )
+                                if(x == fieldSize - y - 1)
                                     rDiagFree[1] = [x, y];
                             } else {
                                 rRowSet++;
                                 rColSet[y]++;
 
                                 // first diagonal
-                                if(
-                                       x === 0 && y === 0
-                                    || x === 1 && y === 1
-                                    || x === 2 && y === 2
-                                )
+                                if(x == y)
                                     rDiagSet[0]++;
 
                                 // second diagonal
-                                if(
-                                       x === 2 && y === 0
-                                    || x === 1 && y === 1
-                                    || x === 0 && y === 2
-                                )
+                                if(x == fieldSize - y - 1)
                                     rDiagSet[1]++;
                             }
 
-                            if(2 === rRowSet && rRowFree)
+                            if(fieldSize - 1 === rRowSet && rRowFree)
                                 protectPoint = rRowFree;
-                            else if(2 === rColSet[y] && rColFree[y])
+                            else if(fieldSize - 1 === rColSet[y] && rColFree[y])
                                 protectPoint = rColFree[y];
-                            else if(2 === rDiagSet[0] && rDiagFree[0])
+                            else if(fieldSize - 1 === rDiagSet[0] && rDiagFree[0])
                                 protectPoint = rDiagFree[0];
-                            else if(2 === rDiagSet[1] && rDiagFree[1])
+                            else if(fieldSize - 1 === rDiagSet[1] && rDiagFree[1])
                                 protectPoint = rDiagFree[1];
                         }
                     });
@@ -124,58 +115,68 @@ export const game = function(state = def, action) {
                 return protectPoint;
             };
 
+            const attack = ()=>{
+                // find unprotected lines
+                const rows = [];
+                const cols = [];
+                const free = [];
+
+                for(let i = 0; i < fieldSize; i++){
+                    rows.push(i);
+                    cols.push(i);
+                }
+
+                cells.map((row, x) => {
+                    row.map((col, y) => {
+                        if(col === 'computer') {
+                            rows[x] = null;
+                            cols[y] = null;
+                        } else if(col === null) {
+                            free.push([x, y]);
+                        }
+                    });
+                });
+
+                const pRows = rows.filter(p => p !== null);
+                const pCols = cols.filter(p => p !== null);
+
+                // try to protect row and col simultaneously
+                let point = null;
+                pRows.map(x => {
+                    pCols.map(y => {
+                        // diagonals preferred
+                        if(!point || x == y || x == fieldSize - y - 1)
+                            point = [x, y];
+                    });
+                });
+
+                // if it impossible, just protect any row or col
+                if(pRows.length > 0) {
+                    const c = free.filter(p => pRows.indexOf(p[0]) !== -1);
+                    point = c.length > 0 ? c[0] : null;
+                } else if (pCols.length > 0) {
+                    const c = free.filter(p => pCols.indexOf(p[1]) !== -1);
+                    point = c.length > 0 ? c[0] : null;
+                } else {
+                    point = free.length > 0 ? free[0] : null;
+                }
+
+                return point;
+            };
+
             const score = Object.assign({}, state.score);
             let isLoose = false;
             let isTie = false;
 
             switch(step) {
                 case 0: // first computer play
-                    cells[0][0] = 'computer';
-                    break;
-                case 2: // second computer play
-                    if(cells[2][2] === 'player')
-                        // player went to opposite corner
-                        // play to contiguous corner
-                        cells[2][0] = 'computer';
-                    else if(cells[1][1] === 'player' || cells[0][2] === 'player' || cells[2][0] === 'player')
-                        // player went to center cell or to one of contiguous corners
-                        // play to opposite corner
-                        cells[2][2] = 'computer';
-                    else
-                        // player went to side cell
-                        // play to center
+                case 1:
+                    if(cells[0][0] === 'player')
                         cells[1][1] = 'computer';
-
-                    break;
-
-                case 4: { // third computer play
-                    // try to complete
-                    let point = line('computer');
-                    if (point) {
-                        cells[point[0]][point[1]] = 'computer';
-                        score.computer++;
-                        isLoose = true;
-                        break;
-                    }
-
-                    // protect first, then attack
-                    point = line('player');
-                    if (point) {
-                        cells[point[0]][point[1]] = 'computer';
-                        break;
-                    }
-
-                    if (cells[0][1] === 'player')
-                        cells[2][0] = 'computer';
-                    else if (cells[0][2] === 'player')
-                        cells[2][0] = 'computer';
                     else
-                        cells[0][2] = 'computer';
-
+                        cells[0][0] = 'computer';
 
                     break;
-
-                }
                 default: {
                     // try to complete
                     let point = line('computer');
@@ -190,13 +191,46 @@ export const game = function(state = def, action) {
                     point = line('player');
                     if (point) {
                         cells[point[0]][point[1]] = 'computer';
-                        isTie = step >= 8;
+                        break;
+                    }
+
+                    // for simplest field use special strategy for protection
+                    if(fieldSize === 3){
+                        if(step === 2){
+                            if(cells[2][2] === 'player')
+                            // player went to opposite corner
+                            // play to contiguous corner
+                                cells[2][0] = 'computer';
+                            else if(cells[1][1] === 'player' || cells[0][2] === 'player' || cells[2][0] === 'player')
+                            // player went to center cell or to one of contiguous corners
+                            // play to opposite corner
+                                cells[2][2] = 'computer';
+                            else
+                            // player went to side cell
+                            // play to center
+                                cells[1][1] = 'computer';
+
+                            break;
+                        }
+
+                        if(step === 3 && cells[0][0] === 'player'){
+                            cells[1][0] = 'computer';
+                            break;
+                        }
+                    }
+
+                    // attack
+                    point = attack();
+                    if (point) {
+                        cells[point[0]][point[1]] = 'computer';
                         break;
                     }
 
                     break;
                 }
             }
+
+            isTie = !isLoose && step >= fieldSize * fieldSize - 1;
 
             return Object.assign({}, state, {isWaiting: false, waitHandler: null, isLoose, isTie, step: ++step, cells, score});
         }
@@ -206,13 +240,16 @@ export const game = function(state = def, action) {
                 return state;
 
             let {step} = state;
+            const {fieldSize} = action;
             const cells = state.cells.splice(0);
             const {x, y} = action;
 
             if(cells[x][y] === null)
                 cells[x][y] = 'player';
 
-            return Object.assign({}, state, {isWaiting: true, step: ++step, cells});
+            const isTie = step >= fieldSize * fieldSize - 1;
+
+            return Object.assign({}, state, {isWaiting: !isTie, step: ++step, isTie, cells});
         }
     }
 

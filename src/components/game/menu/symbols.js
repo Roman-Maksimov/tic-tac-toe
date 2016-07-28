@@ -25,8 +25,7 @@ export default class Menu extends CComponent {
                     onClick={this.setSymbol.bind(this, index)}
                 >{title}</li>
             )}</ul>
-
-
+            <span>Note! <b>X</b> will go first, then <b>0</b></span>
         </div>);
     }
 }

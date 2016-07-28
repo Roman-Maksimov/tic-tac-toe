@@ -43,9 +43,26 @@ module.exports = {
         stats: { colors: true }
     },
 
-    devtool: 'source-map',
+    devtool: 'inline-source-map',
 
     module: {
+        preLoaders: [
+            {
+                test: /.spec\.js$/,
+                include: /(src|tests)/,
+                exclude: /node_modules/,
+                loaders: ['babel?presets[]=es2015,presets[]=stage-0,presets[]=react,plugins[]=transform-decorators-legacy']
+            }/*,
+            {
+                test: /\.js?$/,
+                include: /src/,
+                exclude: /(node_modules|__tests__)/,
+                loader: 'babel-istanbul',
+                query: {
+                    cacheDirectory: false,
+                },
+            },*/
+        ],
         loaders: [
             {
                 test: /.jsx?$/,
